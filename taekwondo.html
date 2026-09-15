@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taekwondo | Instructor 2º Dan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;700&family=Oswald:wght@300;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red:   #C8102E;
+      --blue:  #003594;
+      --gold:  #D4A017;
+      --dark:  #0A0A0F;
+      --mid:   #111118;
+      --light: #E8E8F0;
+      --white: #FFFFFF;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: var(--light);
+      font-family: 'Noto Sans KR', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.35;
+    }
+
+    /* ────────── NAV ────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: linear-gradient(180deg, rgba(10,10,15,.95) 0%, transparent 100%);
+      backdrop-filter: blur(4px);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: .15em;
+      color: var(--white);
+    }
+    .nav-logo span { color: var(--red); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-family: 'Oswald', sans-serif; font-weight: 300;
+      font-size: .85rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--light); text-decoration: none; opacity: .7;
+      transition: opacity .2s, color .2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--gold); }
+
+    /* ────────── HERO ────────── */
+    #hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 60% 50%, rgba(200,16,46,.18) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 70% at 20% 80%, rgba(0,53,148,.22) 0%, transparent 60%),
+        var(--dark);
+    }
+    /* diagonal stripe accent */
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        -55deg,
+        transparent, transparent 60px,
+        rgba(255,255,255,.012) 60px, rgba(255,255,255,.012) 61px
+      );
+    }
+
+    /* big taeguk watermark */
+    .taeguk-mark {
+      position: absolute; right: -6vw; top: 50%;
+      transform: translateY(-50%);
+      font-size: clamp(22rem, 38vw, 56rem);
+      line-height: 1;
+      opacity: .04; user-select: none; pointer-events: none;
+      animation: spin 60s linear infinite;
+    }
+    @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
+      align-items: center; max-width: 1200px; width: 90%; margin: 0 auto;
+      padding-top: 6rem;
+    }
+
+    .hero-text {}
+    .rank-badge {
+      display: inline-flex; align-items: center; gap: .6rem;
+      background: rgba(212,160,23,.12);
+      border: 1px solid rgba(212,160,23,.35);
+      border-radius: 2px;
+      padding: .35rem .9rem;
+      margin-bottom: 1.4rem;
+      font-family: 'Oswald', sans-serif;
+      font-size: .78rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--gold);
+    }
+    .rank-badge::before { content: '■'; font-size: .5rem; }
+
+    .hero-text h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 7vw, 8rem);
+      line-height: .92;
+      letter-spacing: .04em;
+      color: var(--white);
+    }
+    .hero-text h1 em {
+      font-style: normal;
+      display: block;
+      color: var(--red);
+      -webkit-text-stroke: 1px var(--red);
+    }
+    .hero-subtitle {
+      margin-top: 1.6rem;
+      font-weight: 300; font-size: 1rem; line-height: 1.75;
+      opacity: .7; max-width: 38ch;
+    }
+    .hero-cta {
+      margin-top: 2.4rem; display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .btn {
+      font-family: 'Oswald', sans-serif; font-weight: 500;
+      font-size: .85rem; letter-spacing: .14em; text-transform: uppercase;
+      text-decoration: none; display: inline-block;
+      padding: .85rem 2.2rem; border-radius: 2px;
+      transition: all .25s;
+    }
+    .btn-primary {
+      background: var(--red); color: var(--white);
+      box-shadow: 0 0 30px rgba(200,16,46,.4);
+    }
+    .btn-primary:hover {
+      background: #e01232;
+      box-shadow: 0 0 50px rgba(200,16,46,.65);
+      transform: translateY(-2px);
+    }
+    .btn-outline {
+      border: 1px solid rgba(255,255,255,.25); color: var(--white);
+    }
+    .btn-outline:hover {
+      border-color: var(--white); background: rgba(255,255,255,.06);
+      transform: translateY(-2px);
+    }
+
+    /* stats panel */
+    .hero-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.07);
+    }
+    .stat-cell {
+      background: var(--mid);
+      padding: 2.2rem 1.8rem;
+      position: relative; overflow: hidden;
+    }
+    .stat-cell::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--red);
+      opacity: 0; transition: opacity .3s;
+    }
+    .stat-cell:hover::before { opacity: 1; }
+    .stat-cell:nth-child(2)::before { background: var(--blue); }
+    .stat-cell:nth-child(3)::before { background: var(--gold); }
+    .stat-cell:nth-child(4)::before { background: var(--red); }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.6rem; line-height: 1;
+      color: var(--white);
+      letter-spacing: .02em;
+    }
+    .stat-num span { color: var(--red); }
+    .stat-label {
+      font-family: 'Oswald', sans-serif; font-weight: 300;
+      font-size: .78rem; letter-spacing: .14em; text-transform: uppercase;
+      opacity: .55; margin-top: .4rem;
+    }
+
+    /* entry animations */
+    .fade-in { opacity: 0; transform: translateY(24px); animation: fadeUp .8s forwards; }
+    .fade-in:nth-child(2) { animation-delay: .15s; }
+    .fade-in:nth-child(3) { animation-delay: .3s; }
+    .fade-in:nth-child(4) { animation-delay: .45s; }
+    @keyframes fadeUp { to { opacity: 1; transform: none; } }
+
+    /* ────────── SECTION BASE ────────── */
+    section { position: relative; z-index: 1; }
+    .section-inner { max-width: 1200px; margin: 0 auto; padding: 7rem 4rem; width: 90%; }
+    .section-tag {
+      font-family: 'Oswald', sans-serif; font-weight: 300;
+      font-size: .75rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--red); margin-bottom: .8rem;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.4rem, 4.5vw, 4rem);
+      letter-spacing: .05em; color: var(--white); line-height: 1;
+      margin-bottom: 2.4rem;
+    }
+
+    /* ────────── ABOUT ────────── */
+    #about { background: var(--mid); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1.35fr; gap: 5rem; align-items: start;
+    }
+    .black-belt-visual {
+      position: relative;
+      aspect-ratio: 3/4; background: var(--dark);
+      border: 1px solid rgba(255,255,255,.07);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .belt-emoji { font-size: 10rem; line-height: 1; }
+    .belt-stripe {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 22%; background: var(--dark);
+      border-top: 6px solid var(--red);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .belt-stripe-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem; letter-spacing: .3em; color: var(--gold);
+    }
+    .corner-accent {
+      position: absolute;
+      width: 2rem; height: 2rem;
+      border-color: var(--red);
+      border-style: solid;
+    }
+    .corner-accent.tl { top: .8rem; left: .8rem; border-width: 2px 0 0 2px; }
+    .corner-accent.br { bottom: .8rem; right: .8rem; border-width: 0 2px 2px 0; }
+
+    .about-text p {
+      font-weight: 300; line-height: 1.85; opacity: .78; margin-bottom: 1.4rem;
+    }
+    .belt-details {
+      margin-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,.08); padding-top: 1.8rem;
+    }
+    .belt-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: .85rem 0; border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .belt-item-label {
+      font-family: 'Oswald', sans-serif; font-weight: 300;
+      font-size: .82rem; letter-spacing: .1em; text-transform: uppercase; opacity: .55;
+    }
+    .belt-item-val {
+      font-family: 'Oswald', sans-serif; font-weight: 500;
+      font-size: .9rem; letter-spacing: .08em; color: var(--gold);
+    }
+
+    /* ────────── COMPETITIONS ────────── */
+    #competitions { background: var(--dark); }
+    .comps-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+      background: rgba(255,255,255,.06); margin-top: 1rem;
+    }
+    .comp-card {
+      background: var(--mid); padding: 2.5rem 2rem;
+      position: relative; overflow: hidden;
+      transition: background .25s;
+    }
+    .comp-card:hover { background: #16161f; }
+    .comp-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px; background: linear-gradient(90deg, var(--red), var(--blue));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .4s;
+    }
+    .comp-card:hover::after { transform: scaleX(1); }
+    .comp-medal {
+      font-size: 2.4rem; margin-bottom: 1rem; line-height: 1;
+    }
+    .comp-title {
+      font-family: 'Oswald', sans-serif; font-weight: 500;
+      font-size: 1rem; letter-spacing: .06em; text-transform: uppercase;
+      color: var(--white); margin-bottom: .5rem;
+    }
+    .comp-detail {
+      font-size: .82rem; font-weight: 300; opacity: .55; line-height: 1.6;
+    }
+    .comp-year {
+      position: absolute; top: 2rem; right: 2rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem; letter-spacing: .06em;
+      color: rgba(255,255,255,.07);
+    }
+
+    /* ────────── TEACHING ────────── */
+    #teaching { background: var(--mid); }
+    .teaching-grid {
+      display: grid; grid-template-columns: 1.35fr 1fr; gap: 5rem; align-items: center;
+    }
+    .teaching-list { list-style: none; }
+    .teaching-list li {
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      padding: 1.4rem 0; border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .t-icon {
+      width: 2.6rem; height: 2.6rem; flex-shrink: 0;
+      background: rgba(200,16,46,.12); border: 1px solid rgba(200,16,46,.2);
+      border-radius: 2px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .t-body {}
+    .t-title {
+      font-family: 'Oswald', sans-serif; font-weight: 500;
+      font-size: .95rem; letter-spacing: .06em; text-transform: uppercase;
+      color: var(--white); margin-bottom: .3rem;
+    }
+    .t-desc { font-size: .85rem; font-weight: 300; opacity: .6; line-height: 1.65; }
+
+    .methodology-box {
+      background: var(--dark); border: 1px solid rgba(255,255,255,.07);
+      padding: 2.5rem 2.2rem;
+    }
+    .mbox-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem; letter-spacing: .06em;
+      color: var(--gold); margin-bottom: 1.4rem;
+    }
+    .mbox-body { font-weight: 300; opacity: .7; line-height: 1.8; font-size: .9rem; }
+    .flag-row {
+      display: flex; gap: .5rem; margin-top: 1.4rem; flex-wrap: wrap;
+    }
+    .flag {
+      font-family: 'Oswald', sans-serif; font-weight: 300;
+      font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      padding: .35rem .75rem; border-radius: 1px;
+      opacity: .7;
+    }
+
+    /* ────────── CONTACT ────────── */
+    #contact {
+      background: var(--dark);
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
+    }
+    .contact-info p {
+      font-weight: 300; opacity: .65; line-height: 1.85; margin-bottom: 1.4rem;
+    }
+    .contact-items { margin-top: 2rem; }
+    .c-item {
+      display: flex; gap: 1rem; align-items: center;
+      padding: .9rem 0; border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .c-icon { font-size: 1.1rem; width: 1.8rem; text-align: center; }
+    .c-text { font-family: 'Oswald', sans-serif; font-weight: 300; opacity: .7; }
+
+    form { display: flex; flex-direction: column; gap: 1rem; }
+    label {
+      font-family: 'Oswald', sans-serif; font-weight: 300;
+      font-size: .78rem; letter-spacing: .14em; text-transform: uppercase;
+      opacity: .5; display: block; margin-bottom: .35rem;
+    }
+    input, textarea {
+      width: 100%; background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1); border-radius: 1px;
+      color: var(--white); font-family: 'Noto Sans KR', sans-serif;
+      font-size: .9rem; padding: .85rem 1rem;
+      transition: border-color .2s;
+      outline: none;
+    }
+    input:focus, textarea:focus { border-color: rgba(200,16,46,.5); }
+    textarea { resize: vertical; min-height: 120px; }
+    .form-btn {
+      align-self: flex-start; margin-top: .5rem;
+    }
+
+    /* ────────── FOOTER ────────── */
+    footer {
+      background: #050508; padding: 2rem 4rem;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid rgba(255,255,255,.05);
+    }
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem; letter-spacing: .15em;
+    }
+    .footer-logo span { color: var(--red); }
+    .footer-copy {
+      font-size: .78rem; opacity: .35; font-weight: 300;
+    }
+
+    /* ────────── RESPONSIVE ────────── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 2rem; }
+      .nav-links { display: none; }
+      .hero-content { grid-template-columns: 1fr; gap: 3rem; }
+      .taeguk-mark { font-size: 22rem; right: -4rem; }
+      .about-grid, .teaching-grid, .contact-grid { grid-template-columns: 1fr; }
+      .comps-grid { grid-template-columns: 1fr; }
+      .section-inner { padding: 5rem 2rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">TKD<span>•</span>PRO</div>
+  <ul class="nav-links">
+    <li><a href="#about">Sobre mí</a></li>
+    <li><a href="#competitions">Competencias</a></li>
+    <li><a href="#teaching">Enseñanza</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="taeguk-mark">☯</div>
+
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="rank-badge fade-in">Cinturón Negro · 2º Dan · WTF/WT Certified</div>
+      <h1 class="fade-in">
+        MAESTRO<br>
+        <em>TAEKWONDO</em>
+      </h1>
+      <p class="hero-subtitle fade-in">
+        Más de una década forjando campeones y disciplina. Técnica de alto rendimiento, 
+        metodología probada en competencia nacional e internacional.
+      </p>
+      <div class="hero-cta fade-in">
+        <a href="#contact" class="btn btn-primary">Reservar clase</a>
+        <a href="#about" class="btn btn-outline">Conocer más</a>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-cell">
+        <div class="stat-num">12<span>+</span></div>
+        <div class="stat-label">Años de experiencia</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">30<span>+</span></div>
+        <div class="stat-label">Competencias</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">150<span>+</span></div>
+        <div class="stat-label">Alumnos formados</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">2<span>°</span></div>
+        <div class="stat-label">Dan — Cinturón negro</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="black-belt-visual">
+        <div class="corner-accent tl"></div>
+        <div class="corner-accent br"></div>
+        <div class="belt-emoji">🥋</div>
+        <div class="belt-stripe">
+          <span class="belt-stripe-text">2º DAN</span>
+        </div>
+      </div>
+
+      <div class="about-text">
+        <div class="section-tag">Sobre mí</div>
+        <h2 class="section-title">DISCIPLINA QUE SE TRANSMITE</h2>
+
+        <p>
+          Comencé mi camino en el Taekwondo hace más de 12 años, impulsado por la pasión 
+          por las artes marciales y el deporte de alto rendimiento. Hoy soy cinturón negro 
+          2º Dan, certificado por la World Taekwondo Federation, con amplia trayectoria 
+          en competencias a nivel regional, nacional e internacional.
+        </p>
+        <p>
+          Mi filosofía de enseñanza combina la disciplina tradicional coreana con metodologías 
+          modernas de entrenamiento deportivo. Cada alumno recibe atención personalizada: 
+          desde las patadas básicas hasta la táctica de combate de alto nivel.
+        </p>
+        <p>
+          He entrenado atletas de todas las edades —desde niños de 5 años hasta adultos 
+          mayores— logrando títulos en más de 30 competencias y formando a más de 150 
+          deportistas a lo largo de mi carrera.
+        </p>
+
+        <div class="belt-details">
+          <div class="belt-item">
+            <span class="belt-item-label">Rango</span>
+            <span class="belt-item-val">2º Dan — Cinturón Negro</span>
+          </div>
+          <div class="belt-item">
+            <span class="belt-item-label">Certificación</span>
+            <span class="belt-item-val">World Taekwondo (WT)</span>
+          </div>
+          <div class="belt-item">
+            <span class="belt-item-label">Especialidad</span>
+            <span class="belt-item-val">Combate · Poomsae · Iniciación</span>
+          </div>
+          <div class="belt-item">
+            <span class="belt-item-label">Experiencia docente</span>
+            <span class="belt-item-val">+8 años enseñando</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETITIONS -->
+<section id="competitions">
+  <div class="section-inner">
+    <div class="section-tag">Trayectoria competitiva</div>
+    <h2 class="section-title">MÁS DE 30 COMPETENCIAS</h2>
+
+    <div class="comps-grid">
+      <div class="comp-card">
+        <div class="comp-year">2022</div>
+        <div class="comp-medal">🥇</div>
+        <div class="comp-title">Campeonato Nacional</div>
+        <div class="comp-detail">1er lugar — Categoría Senior Masculino &lt;74kg<br>Representación provincial</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-year">2021</div>
+        <div class="comp-medal">🥈</div>
+        <div class="comp-title">Open Internacional</div>
+        <div class="comp-detail">2do lugar — División Combate<br>Torneo internacional clasificatorio</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-year">2020</div>
+        <div class="comp-medal">🥇</div>
+        <div class="comp-title">Copa Regional</div>
+        <div class="comp-detail">1er lugar — Poomsae y Combate<br>Doble medallista en misma edición</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-year">2019</div>
+        <div class="comp-medal">🥉</div>
+        <div class="comp-title">Juegos Universitarios</div>
+        <div class="comp-detail">3er lugar — Representación institucional<br>Mejor debut en categoría absoluta</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-year">2018</div>
+        <div class="comp-medal">🥇</div>
+        <div class="comp-title">Torneo Selección</div>
+        <div class="comp-detail">1er lugar — Clasificatorio provincial<br>Ingreso a selección regional</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-year">2023</div>
+        <div class="comp-medal">🏆</div>
+        <div class="comp-title">+25 Competencias más</div>
+        <div class="comp-detail">Historial completo disponible bajo solicitud.<br>Competencias desde los 15 años de edad.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEACHING -->
+<section id="teaching">
+  <div class="section-inner">
+    <div class="teaching-grid">
+      <div>
+        <div class="section-tag">Metodología de enseñanza</div>
+        <h2 class="section-title">FORMACIÓN INTEGRAL</h2>
+        <ul class="teaching-list">
+          <li>
+            <div class="t-icon">🎯</div>
+            <div class="t-body">
+              <div class="t-title">Técnica y Fundamentos</div>
+              <div class="t-desc">Patadas, bloqueos y posiciones trabajadas desde la base con correcciones posturales individuales para cada alumno.</div>
+            </div>
+          </li>
+          <li>
+            <div class="t-icon">⚡</div>
+            <div class="t-body">
+              <div class="t-title">Preparación para Competencia</div>
+              <div class="t-desc">Entrenamiento táctico, sparring controlado, análisis de rivales y manejo mental del combate.</div>
+            </div>
+          </li>
+          <li>
+            <div class="t-icon">🧠</div>
+            <div class="t-body">
+              <div class="t-title">Poomsae y Disciplina</div>
+              <div class="t-desc">Formas tradicionales que desarrollan concentración, memoria kinestésica y armonía entre cuerpo y mente.</div>
+            </div>
+          </li>
+          <li>
+            <div class="t-icon">🌱</div>
+            <div class="t-body">
+              <div class="t-title">Iniciación Infantil</div>
+              <div class="t-desc">Programa especial para niños desde 5 años: valores, respeto, confianza y primeras bases del Taekwondo.</div>
+            </div>
+          </li>
+          <li>
+            <div class="t-icon">💪</div>
+            <div class="t-body">
+              <div class="t-title">Acondicionamiento Físico</div>
+              <div class="t-desc">Planes de fuerza, flexibilidad y resistencia adaptados al nivel y objetivos de cada deportista.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="methodology-box">
+          <div class="mbox-title">MI FILOSOFÍA DE ENTRENAMIENTO</div>
+          <div class="mbox-body">
+            El Taekwondo no es solo un deporte: es un sistema de vida. 
+            Cada clase es una oportunidad de superar los propios límites, 
+            cultivar la disciplina y construir carácter. 
+            <br><br>
+            Entreno con la misma exigencia que exijo, y celebro cada progreso 
+            de mis alumnos como propio. La técnica se aprende; la mentalidad 
+            ganadora se construye día a día.
+            <br><br>
+            Mi experiencia como competidor activo me permite transmitir 
+            el conocimiento real del tatami —no solo la teoría— para que 
+            cada alumno llegue al máximo de su potencial.
+          </div>
+          <div class="flag-row">
+            <span class="flag">Niños</span>
+            <span class="flag">Adolescentes</span>
+            <span class="flag">Adultos</span>
+            <span class="flag">Competidores</span>
+            <span class="flag">Principiantes</span>
+            <span class="flag">Alto rendimiento</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="section-tag">Contacto</div>
+        <h2 class="section-title">EMPEZÁ TU CAMINO</h2>
+        <p>
+          ¿Querés entrenar Taekwondo con un instructor certificado y con amplia trayectoria 
+          competitiva? La primera clase de evaluación es gratuita.
+        </p>
+        <p>
+          Atiendo consultas sobre clases individuales, grupales, preparación para competencia 
+          y programas para clubes o instituciones deportivas.
+        </p>
+        <div class="contact-items">
+          <div class="c-item">
+            <div class="c-icon">📍</div>
+            <div class="c-text">Dojo disponible — Consultar ubicación</div>
+          </div>
+          <div class="c-item">
+            <div class="c-icon">📞</div>
+            <div class="c-text">+54 9 XXX XXX XXXX</div>
+          </div>
+          <div class="c-item">
+            <div class="c-icon">📧</div>
+            <div class="c-text">instructor@taekwondo.com</div>
+          </div>
+          <div class="c-item">
+            <div class="c-icon">🕐</div>
+            <div class="c-text">Clases: Lun / Mié / Vie — Sáb</div>
+          </div>
+        </div>
+      </div>
+
+      <form>
+        <div>
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" placeholder="Tu nombre" />
+        </div>
+        <div>
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" placeholder="correo@ejemplo.com" />
+        </div>
+        <div>
+          <label for="nivel">Nivel / Categoría</label>
+          <input type="text" id="nivel" placeholder="Ej: Principiante, Infantil, Competidor..." />
+        </div>
+        <div>
+          <label for="mensaje">Mensaje</label>
+          <textarea id="mensaje" placeholder="¿Qué querés lograr con el Taekwondo?"></textarea>
+        </div>
+        <a href="mailto:instructor@taekwondo.com" class="btn btn-primary form-btn">Enviar consulta</a>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">TKD<span>•</span>PRO — 2º Dan</div>
+  <div class="footer-copy">© 2024 · Instructor de Taekwondo Certificado · World Taekwondo</div>
+</footer>
+
+</body>
+</html>
